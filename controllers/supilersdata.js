@@ -2,7 +2,7 @@ const passport = require('passport');
 const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
 const { body, check, validationResult } = require('express-validator');
-const SuppilersDetailsModel = require("../../../models/supilersdata");
+const SuppilersDetailsModel = require("./../models/FormDataModel");
 const crypto = require('crypto');
 const bcrypt = require('bcrypt');
 
@@ -53,7 +53,7 @@ exports.getList = [
     }
 ];
 
-exports.getList = [
+exports.viewDetails = [
     async(req, res, next) => {
 
         try {

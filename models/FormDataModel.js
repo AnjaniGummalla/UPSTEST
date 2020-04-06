@@ -1,44 +1,40 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const CompanySchema = new Schema({
     companyName: {
         type: String,
-        required: true,
-        trim: true,
+        required: false,
+        trim: false,
         minlength: 3,
         maxlength: 80
     },
     dateOfEstablishment: {
         type: Date,
-        required: true,
-        trim: true,
+        required: false,
+        trim: false,
         minlength: 3,
         maxlength: 80
     },
     parentCompany: {
         type: String,
-        required: true,
-        trim: true,
+        required: false,
+        trim: false,
         minlength: 3,
         maxlength: 80
     },
     address: {
          type: Schema.Types.ObjectId,
         ref: 'address',
-        required: true
+        required: false
     },
     taxReferences: {
         type: Schema.Types.ObjectId,
         ref: 'tax',
-        required: true
+        required: false
     },
     Scale: {
         type: String,
-    },
-    expireAt: {
-        type: Date,
-        required: true
     },
     companyType: {
         type: String,
@@ -47,49 +43,48 @@ const CompanySchema = new Schema({
     contactDetailsMangement: {
        type: Schema.Types.ObjectId,
         ref: 'management',
-        required: true
+        required: false
     },
     ContactDetailsSales: {
     	type: Schema.Types.ObjectId,
         ref: 'sales',
-        required: true
+        required: false
 	}, 
 	ContactDetailsFinance: {
     	type: Schema.Types.ObjectId,
         ref: 'finance',
-        required: true
+        required: false
 	},
 	businessProfile: {
     	type: Schema.Types.ObjectId,
         ref: 'businessProfile',
-        required: true
+        required: false
 	}, 
 
 	productsDealing:{
 		type: Schema.Types.ObjectId,
-        ref: 'productsDealing',
-        required: true
+        ref: 'product',
+        required: false
 	},
 	majorCustomers:{
 		type: Schema.Types.ObjectId,
-        ref: 'productsDealing',
-        required: true
+        ref: 'customer',
+        required: false
 	},
 	bankAccountDetails:{
 		type: Schema.Types.ObjectId,
-        ref: 'bankAccountDetails',
-        required: true
+        ref: 'accountdetails',
+        required: false
 	},
 	OtherInformation:{
 		type: String,
-        required: true,
-        trim: true,
+        required: false,
+        trim: false,
         minlength: 3,
         maxlength: 80
 	},
-	{
-    timestamps: true
 });
+
 
 const CompanyModel = mongoose.model('Company', CompanySchema);
 

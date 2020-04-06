@@ -25,4 +25,3 @@ mongoose.connect(mongoDB, { useNewUrlParser: true });
     });
 
     module.exports = mongoose;
-}

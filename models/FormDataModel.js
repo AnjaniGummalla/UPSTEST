@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-
-const CompanySchema = new Schema({
+var SoftDeletePlugin = require('mongoose-delete');
+const FormSchema = new Schema({
     companyName: {
         type: String,
         required: false,
@@ -38,7 +38,7 @@ const CompanySchema = new Schema({
     },
     companyType: {
         type: String,
-        default: ""
+        //default: ""
     },
     contactDetailsMangement: {
        type: Schema.Types.ObjectId,
@@ -83,9 +83,12 @@ const CompanySchema = new Schema({
         minlength: 3,
         maxlength: 80
 	},
-});
+},
+ {collection:'formdata'});
 
 
-const CompanyModel = mongoose.model('Company', CompanySchema);
+const FormModel = mongoose.model('Company', FormSchema);
 
-module.exports = CompanyModel;
+FormSchema.plugin(SoftDeletePlugin, { deletedAt: true, deletedBy: true, overrideMethods: 'all' });
+
+module.exports = FormModel;

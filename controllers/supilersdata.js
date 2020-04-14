@@ -3,15 +3,6 @@ const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
 const { body, check, validationResult } = require('express-validator');
 const SuppilersDetailsModel = require("./../models/FormDataModel");
-const AddressModel = require("./../models/addressModel");
-const CustomerModel = require("./../models/CustomerModel");
-const TaxModel = require("./../models/TaxModel");
-const SalesModel = require("./../models/salesModel");
-const ProductModel = require("./../models/ProductModel");
-const MangementModel = require("./../models/managementModel");
-const FinanceModel = require("./../models/FinanceModel");
-const BusinessprofileModel = require("./../models/BusinessprofileModel");
-const AccountDetailsModel = require("./../models/AccountDetailsModel");
 const crypto = require('crypto');
 const bcrypt = require('bcrypt');
 
@@ -22,116 +13,64 @@ exports.create = [
         console.log("input from postman", request);
         try {
 
-            //console.log("values inserted in the DB", companyDetails);
-            let addressField = {
-             	"email" : request.email,
-             	"tel" : request.tel,
-             	"phone" :request.phone,
-             	"country":request.company,
-             }
-
-             const address = await AddressModel.create(addressField);
-
-              let addressID = address._id;
-             
-             let taxField = {
-             	"PanNo": request.PanNo,
-             	"TinNo" :request.TinNo,
-             	"cstNo" : request.cstNo,
-             	"serviceTaxNo":request.serviceTaxNo,
-             	"VaTnO" : request.VaTnO,
-             	"Others":request.Others,
-
-             }
-             const taxdetails = await TaxModel.create(taxField);
-              let taxid = taxdetails._id;
-
-             let managementField = {
-             	"Name": request.managementName,
-             	"Designation" :request.managementDesignation,
-             	"Department" : request.managementDepartment,
-             	"ContactDetails":request.managementDetails,
-             }
-             const management = await MangementModel.create(managementField);
-             let managementid = management._id;
-
-              let salesField = {
-             	"Name": request.salesName,
-             	"Designation" :request.salesDesignation,
-             	"Department" : request.salesDepartment,
-             	"email":request.saleEmail,
-             	"phoneNumber":request.salephoneNumber,
-             	"level":request.saleLevel,
-             }
-             const salesDetails = await SalesModel.create(salesField);
-             let salesid = salesDetails._id;
-
-             let financeField = {
-             	"Details": request.financeDetails,
-             	"level" :request.fianceLevel,
-             }
-             const finance = await FinanceModel.create(financeField);
-             let financeid = finance._id;
-
-              let BusinessporfileField = {
-
-             	"Manufacturer": request.Manufacturer,
-             	"Trader" :request.Trader,
-             	"AuthorizedAgent": request.AuthorizedAgent,
-             	"ServiceProvider" :request.ServiceProvider,
-             	"Other": request.Other,
-             }
-             const businessdetails = await BusinessprofileModel.create(BusinessporfileField);
-             let businessprofileid = businessdetails._id;
-              let productField = {
-
-             	"Code": request.Code,
-             	"Description" :request.Description,
-             	"QualityStandard": request.QualityStandard,
-             }
-             const productdetails = await ProductModel.create(productField);
-             let productid = productdetails._id;
-              let majorcustomerField = {
-
-             	"Customer": request.Customer,
-             	"Location" :request.Location,
-             	"QualityStandard": request.BusinessPercent,
-             }
-             const majorcustomerdetails = await AccountDetailsModel.create(majorcustomerField);
-              let customersid = majorcustomerdetails._id;
-
-              let AccountDetailsField = {
-             	"AccountNumber": request.AccountNumber,
-             	"RTGSIFSCCode" :request.RTGSIFSCCode,
-             	"NEFTIFCSCode" :request.NEFTIFCSCode,
-             	"MICRNO": request.MICRNO,
-             	"PAN": request.PAN,
-             }
-
-             const accountdetails = await CustomerModel.create(AccountDetailsField);
-              let accountsid = accountdetails._id;
               let Mainfields = 
               {
 
                 "companyName": request.companyName,
                 "dateOfEstablishment": request.dateOfEstablishment,
                 "parentCompany": request.parentCompany,
-                "address": addressID,
-                "taxreference":taxid,
+                "address.email": request.email,
+                //"address.tel": request.tel,
+                "address.phone": request.phone,
+                "address.Fax": request.Fax,
+                "taxReferences.PanNo":request.PanNo ,
+                "taxReferences.TinNo":request.TinNo ,
+                "taxReferences.cstNo":request.cstNo,
+                "taxReferences.serviceTaxNo":request.serviceTaxNo,
+                "taxReferences.VaTno":request.VaTno ,
+                "taxReferences.Others":request.Others,
                 "Scale":request.Scale,
-                "companyType":request.type,
-                "contactDetailsMangement":managementid,
-                "ContactDetailsSales":salesid,
-                "ContactDetailsFinance":financeid,
-                "businessProfile":businessprofileid,
-                "productsDealing":productid,
-                "majorCustomers": customersid,
-                "bankAccountDetails":accountsid,
+                "CompanyType":request.type,
+                "contactDetailsMangement.ManagementName":request.ManagementName ,
+                "contactDetailsMangement.ManagementDesignation":request.ManagementDesignation,
+                "contactDetailsMangement.ManagementDepartment":request.ManagementDepartment,
+                "contactDetailsMangement.ManagementContactDetails":request.ManagementContactDetails,
+                "ContactDetailsSales.SalesName":request.SalesName,
+                "ContactDetailsSales.SalesDesignation":request.SalesDesignation ,
+                "ContactDetailsSales.SalesEmail":request.SalesEmail,
+                "ContactDetailsSales.SalesDepartment":request.SalesDepartment,
+                "ContactDetailsSales.SalesphoneNumber":request.SalesphoneNumber,
+                "ContactDetailsSales.SaleLevel":request.SaleLevel,
+                "ContactDetailsFinance.FinanceDetails": request.financeDetails,
+                "ContactDetailsFinance.FinanceLevel" :request.fianceLevel,
+                "productsDealing.Code": request.Code,
+                "productsDealing.BusinessDescription" :request.BusinessDescription,
+                "productsDealing.QualityStandard": request.QualityStandard,
+                "BusinessProfile.Manufacturer": request.Manufacturer,
+                "BusinessProfile.Trader" :request.Trader,
+                "BusinessProfile.AuthorizedAgent": request.AuthorizedAgent,
+                "BusinessProfile.ServiceProvider" :request.ServiceProvider,
+                "BusinessProfile.BusinessOther": request.BusinessOther,
+                "MajorCustomers.Customer": request.Customer,
+                "MajorCustomers.Location" :request.Location,
+                "MajorCustomers.percentage": request.percentage,
+                "BankAccountDetails.AccountNumber": request.AccountNumber,
+                "BankAccountDetails.RTGSIFSCCode" :request.RTGSIFSCCode,
+                "BankAccountDetails.NEFTIFCSCode" :request.NEFTIFCSCode,
+                "BankAccountDetails.MICRNO": request.MICRNO,
+                "BankAccountDetails.PAN": request.PAN,
+                "BankAccountDetails.AccoutnType": request.AccoutnType,
+                "BankAccountDetails.BankAddress" :request.BankAddress,
+                "BankAccountDetails.Branch" :request.Branch,
+                "BankAccountDetails.BankName": request.BankName,
+                "BankAccountDetails.BankCity": request.BankCity,
                 "OtherInformation" : request.information,
 
             }
             let companyDetails = await SuppilersDetailsModel.create(Mainfields);
+            
             console.log(companyDetails);
+
             return res.status(200).json(companyDetails);
         } catch (err) {
             console.log(err)
@@ -144,106 +83,14 @@ exports.UpdateData = [
 
     async(req, res, next) => {
         let request = req.body;
-        console.log("id from frontend",request);
-        //let user = req.user;
-        	const fields = {
-
-            	"companyName": request.companyName,
-                "dateOfEstablishment": request.dateOfEstablishment,
-                "parentCompany": request.parentCompany,
-                "address": request.address,
-                "taxreference":request.taxReferences,
-                "Scale":request.Scale,
-                "companyType":request.type,
-                "contactDetailsMangement":request.contactDetailsMangement,
-                "ContactDetailsSales":request.ContactDetailsSales,
-                "ContactDetailsFinance":request.ContactDetailsFinance,
-                "businessProfile":request.businessProfile,
-                "productsDealing":request.productsDealing,
-                "majorCustomers": request.majorCustomers,
-                "bankAccountDetails":request.bankAccountDetails,
-                "OtherInformation" : request.information,
-       		 }
-        	 let accountsfields = {
-             	"AccountNumber": request.AccountNumber,
-             	"RTGSIFSCCode" :request.RTGSIFSCCode,
-             	"NEFTIFCSCode" :request.NEFTIFCSCode,
-             	"MICRNO": request.MICRNO,
-             	"PAN": request.PAN,
-             }
-              let addressFields = {
-             	"email" : request.email,
-             	"tel" : request.tel,
-             	"phone" :request.phone,
-             	"country":request.company,
-             }
-             
-             let taxfields = {
-             	"PanNo": request.PanNo,
-             	"TinNo" :request.TinNo,
-             	"cstNo" : request.cstNo,
-             	"serviceTaxNo":request.serviceTaxNo,
-             	"VaTnO" : request.VaTnO,
-             	"Others":request.Others,
-
-             }
-             
-             let managementfields = {
-             	"Name": request.managementName,
-             	"Designation" :request.managementDesignation,
-             	"Department" : request.managementDepartment,
-             	"ContactDetails":request.managementDetails,
-             }
-
-              let salesfields = {
-             	"Name": request.salesName,
-             	"Designation" :request.salesDesignation,
-             	"Department" : request.salesDepartment,
-             	"email":request.saleEmail,
-             	"phoneNumber":request.salephoneNumber,
-             	"level":request.saleLevel,
-             }
-
-             let financefields = {
-             	"Details": request.financeDetails,
-             	"level" :request.fianceLevel,
-             }
-            
-              let businessfields = {
-
-             	"Manufacturer": request.Manufacturer,
-             	"Trader" :request.Trader,
-             	"AuthorizedAgent": request.AuthorizedAgent,
-             	"ServiceProvider" :request.ServiceProvider,
-             	"Other": request.Other,
-             }
-             
-              let productfields = {
-
-             	"Code": request.Code,
-             	"Description" :request.Description,
-             	"QualityStandard": request.QualityStandard,
-             }
-             
-              let customerfields = {
-
-             	"Customer": request.Customer,
-             	"Location" :request.Location,
-             	"QualityStandard": request.BusinessPercent,
-             }
+        console.log("id from frontend",req.body);
 
         try {
-            let addressData = await AddressModel.findByIdAndUpdate(request.address, addressFields, { upsert: true, new: true });
-           	let customerData = await CustomerModel.findByIdAndUpdate(request.majorCustomers, customerfields, { upsert: true, new: true });
-           	let taxData = await TaxModel.findByIdAndUpdate(request.taxReferences, taxfields, { upsert: true, new: true });
-           	let salesData = await SalesModel.findByIdAndUpdate(request.ContactDetailsSales, salesfields, { upsert: true, new: true });
-           	let productData = await ProductModel.findByIdAndUpdate(request.productsDealing, productfields, { upsert: true, new: true });
-           	let managementData = await MangementModel.findByIdAndUpdate(request.contactDetailsMangement, managementfields, { upsert: true, new: true });
-           	let financeData = await FinanceModel.findByIdAndUpdate(request.ContactDetailsFinance, financefields, { upsert: true, new: true });
-           	let businessData = await BusinessprofileModel.findByIdAndUpdate(request.businessProfile, businessfields, { upsert: true, new: true });
-           	let accountData = await AccountDetailsModel.findByIdAndUpdate(request.bankAccountDetails, accountsfields, { upsert: true, new: true });
-           	let EditData = await SuppilersDetailsModel.findByIdAndUpdate(request.id, fields, { upsert: true, new: true });
-             return res.status(200).json(EditData);
+
+           	SuppilersDetailsModel.findByIdAndUpdate(req.params.id, req.body, {new: true}, function (err, user) {
+            if (err) return res.status(500).send("There was a problem updating the user.");
+            res.status(200).send(user);
+        });
 
         } catch (e) {
 

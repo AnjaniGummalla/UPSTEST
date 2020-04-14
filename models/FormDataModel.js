@@ -23,58 +23,99 @@ const FormSchema = new Schema({
         minlength: 3,
         maxlength: 80
     },
-    address: {
-         type: Schema.Types.ObjectId,
-        ref: 'address',
-        required: false
+   address: {
+    email: { type: String },
+    //tel: { type: String },
+    phone: { type: String },
+    Fax: { type: String },
     },
-    taxReferences: {
-        type: Schema.Types.ObjectId,
-        ref: 'tax',
-        required: false
+
+    taxReferences: {   
+    PanNo: { type: String },
+    TinNo: { type: String },
+    cstNo: { type: String },
+    serviceTaxNo: { type: String },
+    VaTno: { type: String },
+    Others:  {
+        type: String,
+        required: false,
+        trim: false,
+        minlength: 3,
+        maxlength: 1000
+    },
     },
     Scale: {
         type: String,
     },
-    companyType: {
+    CompanyType: {
         type: String,
         //default: ""
     },
-    contactDetailsMangement: {
-       type: Schema.Types.ObjectId,
-        ref: 'management',
-        required: false
+    contactDetailsMangement: {   
+    ManagementName: { type: String },
+    ManagementDesignation:{
+        type: String,
+        required: false,
+        trim: false,
+        minlength: 3,
+        maxlength: 1000
+    },
+    ManagementDepartment: { type: String },
+    ManagementContactDetails: { type: String },
     },
     ContactDetailsSales: {
-    	type: Schema.Types.ObjectId,
-        ref: 'sales',
-        required: false
+    SalesName: { type: String },
+    SalesDesignation: {
+        type: String,
+        required: false,
+        trim: false,
+        minlength: 3,
+        maxlength: 1000
+    },
+    SalesEmail: { type: String },
+    SalesDepartment: { type: String },
+    SalesphoneNumber: { type: String },
+    SaleLevel: { type: String },
 	}, 
 	ContactDetailsFinance: {
-    	type: Schema.Types.ObjectId,
-        ref: 'finance',
-        required: false
+    FinanceDetails: { type: String },
+    FinanceLevel: { type: String },
 	},
-	businessProfile: {
-    	type: Schema.Types.ObjectId,
-        ref: 'businessProfile',
-        required: false
+	productsDealing: {
+    Code: { type: String },
+    BusinessDescription: {
+        type: String,
+        required: false,
+        trim: false,
+        minlength: 3,
+        maxlength: 1000
+    },
+    QualityStandard: { type: String },
 	}, 
 
-	productsDealing:{
-		type: Schema.Types.ObjectId,
-        ref: 'product',
-        required: false
+	BusinessProfile: {
+	Manufacturer: { type: String },
+    Trader: { type: String },
+    AuthorizedAgent: { type: String },
+    ServiceProvider: { type: String },
+    BusinessOther: { type: String },
 	},
-	majorCustomers:{
-		type: Schema.Types.ObjectId,
-        ref: 'customer',
-        required: false
+	MajorCustomers:{
+	Customer: { type: String },
+    Location: { type: String },
+    percentage: { type: String },
 	},
-	bankAccountDetails:{
-		type: Schema.Types.ObjectId,
-        ref: 'accountdetails',
-        required: false
+	BankAccountDetails:{
+	AccountNumber: { type: String },
+    BankCity: { type: String },
+    BankName: { type: String },
+    Branch: { type: String },
+    BankAddress: { type: String },
+    AccoutnType: { type: String },
+    RTGSIFSCCode: { type: String },
+    NEFTIFCSCode: { type: String },
+    MICRNO: { type: String },
+    PanNo: { type: String },
 	},
 	OtherInformation:{
 		type: String,
@@ -87,7 +128,7 @@ const FormSchema = new Schema({
  {collection:'formdata'});
 
 
-const FormModel = mongoose.model('Company', FormSchema);
+const FormModel = mongoose.model('Form', FormSchema);
 
 FormSchema.plugin(SoftDeletePlugin, { deletedAt: true, deletedBy: true, overrideMethods: 'all' });
 

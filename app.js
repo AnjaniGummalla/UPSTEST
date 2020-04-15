@@ -4,8 +4,13 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var mongoose = require('mongoose');
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+var suppilersRouter = require('./routes/suppilers.routes');
+var contractorsRouter = require('./routes/contractors.routes');
+var ItemRouter = require('./routes/Item.routes');
+var UOMRouter = require('./routes/UOM.routes');
+var CatageoryRouter = require('./routes/catagory.routes');
+var BrandRouter = require('./routes/brand.routes');
+var RegionRouter = require('./routes/region.routes');
 var fileUpload = require('express-fileupload');
 var app = express();
 
@@ -31,7 +36,7 @@ app.post('/upload', function(req, res) {
       return res.status(500).send(err);
     }
 
-    res.send('File uploaded to ' + uploadPath);
+     res.status(200).json(uploadPath);
   });
 });
 
@@ -50,9 +55,13 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
-
+app.use('/', suppilersRouter);
+app.use('/contract', contractorsRouter);
+app.use('/item', ItemRouter);
+app.use('/UOM', UOMRouter);
+app.use('/catageory', CatageoryRouter);
+app.use('/brand', BrandRouter);
+app.use('/region', RegionRouter);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));

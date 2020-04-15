@@ -2,10 +2,13 @@ const passport = require('passport');
 const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
 const { body, check, validationResult } = require('express-validator');
-//const ContractorFormDataModel = require("./../models/ContractorFormDataModel");
+const ContractorFormDataModel = require("./../models/ContractorFormDataModel");
+const LabourModel = require("./../models/LabourModel");
+const MachineriesModel = require("./../models/MachineriesModel");
 const crypto = require('crypto');
 const bcrypt = require('bcrypt');
 var fileupload = require('express-fileupload');
+
 exports.create = [
   
     async(req, res, next) => {
@@ -13,65 +16,80 @@ exports.create = [
         console.log("input from postman", request);
         try {
 
+            let labourFields = {
+
+                "Welders.Description" : request.Weldersdesc,
+                "Welders.No" : request.WeldersNo,
+                "Welders.AvgExperience" : request.WAvgExperience,
+                "Fitters.Description" : request.Fittersdesc,
+                "Fitters.No" : request.FittersNo,
+                "Fitters.AvgExperience" : request.FAvgExperience,
+                "Helpers.Description" : request.Helpersdesc,
+                "Helpers.No" : request.HelpersNo,
+                "Helpers.AvgExperience" : request.HelpersAvgExperience,
+                "Fabricators.Description" : request.Fabricatorsdesc,
+                "Fabricators.No" : request.FabricatorsNo,
+                "Fabricators.AvgExperience" : request.FabricatorsAvgExperience,
+                "Riggers.Description" : request.Riggersdesc,
+                "Riggers.No" : request.RiggersNo,
+                "Riggers.AvgExperience" : request.RiggersAvgExperience,
+                "Others.Description" : request.Othersdesc,
+                "Others.No" : request.OthersNo,
+                "Others.AvgExperience" : request.OthersAvgExperience,
+             }
+
+             const labour = await LabourModel.create(labourFields);
+
+              let labourID = labour._id;
+
+               let MachineriesFields = {
+                "WeldingMc.Description" : request.WeldingMcDesc,
+                "WeldingMc.No" : request.WeldingMcNo,
+                "WeldingMc.Condition" : request.WCondition,
+                "DrillingMc.Description" : request.DrillingMcDesc,
+                "DrillingMc.No" : request.DrillingMcNo,
+                "DrillingMc.Condition" : request.DrillingMcNo,
+                "Weldingtourch.Description" : request.WeldingtourchDesc,
+                "Weldingtourch.No" : request.WeldingtourchNo,
+                "Weldingtourch.Condition" : request.WeldingtourchNo,
+             }
+
+             const machineries = await MachineriesModel.create(MachineriesFields);
+
+              let machineriesID = machineries._id;
+
               let Mainfields = 
               {
 
                 "companyName": request.companyName,
-                "dateOfEstablishment": request.dateOfEstablishment,
-                "parentCompany": request.parentCompany,
+                "Labours": labourID,
+                "Machineries": machineriesID,
                 "address.email": request.email,
-                //"address.tel": request.tel,
                 "address.phone": request.phone,
                 "address.Fax": request.Fax,
-                "taxReferences.PanNo":request.PanNo ,
-                "taxReferences.TinNo":request.TinNo ,
-                "taxReferences.cstNo":request.cstNo,
-                "taxReferences.serviceTaxNo":request.serviceTaxNo,
-                "taxReferences.VaTno":request.VaTno ,
-                "taxReferences.Others":request.Others,
-                "Scale":request.Scale,
-                "CompanyType":request.type,
-                "contactDetailsMangement.ManagementName":request.ManagementName ,
-                "contactDetailsMangement.ManagementDesignation":request.ManagementDesignation,
-                "contactDetailsMangement.ManagementDepartment":request.ManagementDepartment,
-                "contactDetailsMangement.ManagementContactDetails":request.ManagementContactDetails,
-                "ContactDetailsSales.SalesName":request.SalesName,
-                "ContactDetailsSales.SalesDesignation":request.SalesDesignation ,
-                "ContactDetailsSales.SalesEmail":request.SalesEmail,
-                "ContactDetailsSales.SalesDepartment":request.SalesDepartment,
-                "ContactDetailsSales.SalesphoneNumber":request.SalesphoneNumber,
-                "ContactDetailsSales.SaleLevel":request.SaleLevel,
-                "ContactDetailsFinance.FinanceDetails": request.financeDetails,
-                "ContactDetailsFinance.FinanceLevel" :request.fianceLevel,
-                "productsDealing.Code": request.Code,
-                "productsDealing.BusinessDescription" :request.BusinessDescription,
-                "productsDealing.QualityStandard": request.QualityStandard,
-                "BusinessProfile.Manufacturer": request.Manufacturer,
-                "BusinessProfile.Trader" :request.Trader,
-                "BusinessProfile.AuthorizedAgent": request.AuthorizedAgent,
-                "BusinessProfile.ServiceProvider" :request.ServiceProvider,
-                "BusinessProfile.BusinessOther": request.BusinessOther,
-                "MajorCustomers.Customer": request.Customer,
-                "MajorCustomers.Location" :request.Location,
-                "MajorCustomers.percentage": request.percentage,
-                "BankAccountDetails.AccountNumber": request.AccountNumber,
-                "BankAccountDetails.RTGSIFSCCode" :request.RTGSIFSCCode,
-                "BankAccountDetails.NEFTIFCSCode" :request.NEFTIFCSCode,
-                "BankAccountDetails.MICRNO": request.MICRNO,
-                "BankAccountDetails.PAN": request.PAN,
-                "BankAccountDetails.AccoutnType": request.AccoutnType,
-                "BankAccountDetails.BankAddress" :request.BankAddress,
-                "BankAccountDetails.Branch" :request.Branch,
-                "BankAccountDetails.BankName": request.BankName,
-                "BankAccountDetails.BankCity": request.BankCity,
-                "OtherInformation" : request.information,
+                "ProperitorName" : request.ProperitorName,
+                "TelephoneNo" : request.TelephoneNo,
+                "TypeofWork" : request.TypeofWork,
+                "WorkExperienceinYears" : request.WorkExperienceinYears,
+                "ProjectManagerApproval" : request.ProjectManagerApproval,
+                "PhysicalInspection" : request.PhysicalInspection,
+                "PanNo" : request.PanNo,
+                "GSTRegistrationNo" : request.GSTRegistrationNo,
+                "ESINo" : request.ESINo,
+                "ESIAgree" : request.ESIAgree,
+                "HR" : request.HR,
+                "ESIdeduction" : request.ESIdeduction,
+                "Office.RegistrationNo": request.RegistrationNo,
+                "Office.Date": request.Date,
+                "Office.Valid": request.Valid,
+                "Office.Location": request.Location,
 
             }
-            let companyDetails = await ContractorFormDataModel.create(Mainfields);
+            let contractorDetails = await ContractorFormDataModel.create(Mainfields);
             
-            console.log(companyDetails);
+            console.log(contractorDetails);
 
-            return res.status(200).json(companyDetails);
+            return res.status(200).json(contractorDetails);
         } catch (err) {
             console.log(err)
             return res.json(500, __("server_error"));
@@ -79,17 +97,54 @@ exports.create = [
     }
 ];
 
+
 exports.UpdateData = [
 
-    async(req, res, next) => {
+    async (req, res, next) => {
         let request = req.body;
         console.log("id from frontend",req.body);
+         
+         let labourFields = {
+
+                "Welders.Description" : request.Weldersdesc,
+                "Welders.No" : request.WeldersNo,
+                "Welders.AvgExperience" : request.WAvgExperience,
+                "Fitters.Description" : request.Fittersdesc,
+                "Fitters.No" : request.FittersNo,
+                "Fitters.AvgExperience" : request.FAvgExperience,
+                "Helpers.Description" : request.Helpersdesc,
+                "Helpers.No" : request.HelpersNo,
+                "Helpers.AvgExperience" : request.HelpersAvgExperience,
+                "Fabricators.Description" : request.Fabricatorsdesc,
+                "Fabricators.No" : request.FabricatorsNo,
+                "Fabricators.AvgExperience" : request.FabricatorsAvgExperience,
+                "Riggers.Description" : request.Riggersdesc,
+                "Riggers.No" : request.RiggersNo,
+                "Riggers.AvgExperience" : request.RiggersAvgExperience,
+                "Others.Description" : request.Othersdesc,
+                "Others.No" : request.OthersNo,
+                "Others.AvgExperience" : request.OthersAvgExperience,
+             }
+
+               let MachineriesFields = {
+                
+                "WeldingMc.Description" : request.WeldingMcDesc,
+                "WeldingMc.No" : request.WeldingMcNo,
+                "WeldingMc.Condition" : request.WCondition,
+                "DrillingMc.Description" : request.DrillingMcDesc,
+                "DrillingMc.No" : request.DrillingMcNo,
+                "DrillingMc.Condition" : request.DrillingMcNo,
+                "Weldingtourch.Description" : request.WeldingtourchDesc,
+                "Weldingtourch.No" : request.WeldingtourchNo,
+                "Weldingtourch.Condition" : request.WeldingtourchNo,
+             }
 
         try {
-
-           	ContractorFormDataModel.findByIdAndUpdate(req.params.id, req.body, {new: true}, function (err, user) {
-            if (err) return res.status(500).send("There was a problem updating the user.");
-            res.status(200).send(user);
+            let Machineries = await MachineriesModel.findByIdAndUpdate(request.Machineries, MachineriesFields, { upsert: true, new: true });
+            let Labours = await LabourModel.findByIdAndUpdate(request.Labours, labourFields, { upsert: true, new: true });
+           	await ContractorFormDataModel.findByIdAndUpdate(req.params.id, req.body, {new: true}, function (err, Data) {
+            if (err) return res.status(500).send("There was a problem updating the Data.");
+            res.status(200).send(Data);
         });
 
         } catch (e) {
@@ -100,11 +155,31 @@ exports.UpdateData = [
 
     }
 ];
+exports.viewData = [
 
+    async(req, res, next) => {
+        let request = req.body;
+        console.log("id from frontend",req.body);
+
+        try {
+
+          ContractorFormDataModel.findById(req.params.id, function (err, Data) {
+          if (err) return res.status(500).send("There was a problem finding the user.");
+          if (!Data) return res.status(404).send("No Data found.");
+          res.status(200).send(Data);
+      });
+        } catch (e) {
+
+            console.log(e)
+            return res.error(500).json("server error");
+        }
+
+    }
+];
 exports.getList = [async(req, res, next) => {
     try {
 
-        const userTypedata = await ContractorFormDataModel.find({}).populate('address');
+        const userTypedata = await ContractorFormDataModel.find({}).populate('Machineries Labours');
   
         return res.status(200).json(userTypedata);
     } catch (err) {
@@ -114,38 +189,14 @@ exports.getList = [async(req, res, next) => {
 }
 ];
 
-exports.UploadFile = async function (req,res,next) {
-
-  let sampleFile;
-  let uploadPath;
-
-  if (!req.files || Object.keys(req.files).length === 0) {
-    res.status(400).send('No files were uploaded.');
-    return;
-  }
-
-  console.log('req.files >>>', req.files); // eslint-disable-line
-
-  sampleFile = req.files.sampleFile;
-
-  uploadPath = __dirname + '/uploads/' + sampleFile.name;
-
-  sampleFile.mv(uploadPath, function(err) {
-    if (err) {
-      return res.status(500).send(err);
-    }
-
-    res.send('File uploaded to ' + uploadPath);
-  });
-};
-
 exports.deleteData = [
  
     async(req, res, next) => {
         try {
-        	const request = req.body;
-            const a = await ContractorFormDataModel.findByIdAndRemove(mongoose.Types.ObjectId(req.params.data), (err, petDocument) => {})
-            return res.status(200).json('Form deleted successfully');
+        	ContractorFormDataModel.findByIdAndRemove(req.params.id, function (err, user) {
+          if (err) return res.status(500).send("There was a problem deleting the user.");
+          res.status(200).send("Successfull Deletion.");
+      });
         } catch (err) {
             console.log(err)
             return res.status(500).json('server error');

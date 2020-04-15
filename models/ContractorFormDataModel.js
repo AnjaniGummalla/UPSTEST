@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 var SoftDeletePlugin = require('mongoose-delete');
 const ContractorFormSchema = new Schema({
     companyName: {
-
+        
         type: String,
         required: false,
         trim: false,
@@ -12,12 +12,12 @@ const ContractorFormSchema = new Schema({
     },
      Labours: {
        type: Schema.Types.ObjectId,
-       ref: 'labour',
+       ref: 'Labours',
        //required: true
     },
     Machineries: {
        type: Schema.Types.ObjectId,
-       ref: 'labour',
+       ref: 'Machineries',
        //required: true
     },
    address: {
@@ -74,38 +74,36 @@ const ContractorFormSchema = new Schema({
         minlength: 3,
         maxlength: 80
     },
-    ESIAgree {
+    ESIAgree:{
+
+        type: Boolean,
+
+    },
+
+    HR:{
         type: String,
         required: false,
         trim: false,
         minlength: 3,
         maxlength: 80
     },
-    HR {
-        type: String,
-        required: false,
-        trim: false,
-        minlength: 3,
-        maxlength: 80
+    ESIdeduction:
+    {
+        type: Boolean,
     },
-    ESIdeduction {
-        type: String,
-        required: false,
-        trim: false,
-        minlength: 3,
-        maxlength: 80
-    },
-    Office {
-    Contr.RegistrationNo: { type: String },
+    Office:
+    {
+    RegistrationNo: { type: String },
     Date: { type: Date },
     Valid: { type: Date },
     Location: { type: String },
     },
- {collection:'contractorData'});
+ 
+ });
 
 
 const ContractorFormModel = mongoose.model('ContractorForm', ContractorFormSchema);
 
-FormSchema.plugin(SoftDeletePlugin, { deletedAt: true, deletedBy: true, overrideMethods: 'all' });
+ContractorFormSchema.plugin(SoftDeletePlugin, { deletedAt: true, deletedBy: true, overrideMethods: 'all' });
 
 module.exports = ContractorFormModel;

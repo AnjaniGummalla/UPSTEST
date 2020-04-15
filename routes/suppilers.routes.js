@@ -12,11 +12,4 @@ router.get('/getList',suppilersFormData.getList);
 router.put('/editData/:id',suppilersFormData.UpdateData);
 router.delete('/formdelete/:data',suppilersFormData.deleteData);
 
-/* Contractor routers */
-router.post('/create',contractorFormData.create);
-router.get('/getList',contractorFormData.getList);
-router.put('/editData/:id',contractorFormData.UpdateData);
-//router.post('/upload',contractorFormData.UploadFile);
-router.delete('/formdelete/:data',contractorFormData.deleteData);
-
 module.exports = router;

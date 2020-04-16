@@ -4,7 +4,7 @@ var bodyParser = require('body-parser');
 router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());
 var BrandModel = require('./../models/BrandModel');
-
+var TeamModel = require('./../models/TeamMaster');
 
 router.post('/create', function(req, res) {
 
@@ -21,7 +21,7 @@ router.post('/create', function(req, res) {
 
 router.get('/getlist', function (req, res) {
         BrandModel.find({}, function (err, Data) {
-            if (err) return res.status(500).send("There was a problem finding the data.");
+            if (err) return res.status(500).send("There was a problem finding the Data.");
             res.status(200).send(Data);
         });
 });

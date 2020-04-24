@@ -12,6 +12,7 @@ var CatageoryRouter = require('./routes/catagory.routes');
 var BrandRouter = require('./routes/brand.routes');
 var RegionRouter = require('./routes/region.routes');
 var TeamRouter = require('./routes/teamMaster.routes');
+
 var fileUpload = require('express-fileupload');
 var app = express();
 
@@ -64,6 +65,7 @@ app.use('/catageory', CatageoryRouter);
 app.use('/brand', BrandRouter);
 app.use('/region', RegionRouter);
 app.use('/team', TeamRouter);
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
